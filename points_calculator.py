@@ -70,7 +70,7 @@ def main():
         df=pd.read_csv(argument.flag, sep = ";")
         subset = df.loc[df["Fundraiser ID"] == argument.fundraiser]
         if subset.empty:
-             raise Exception("Fundraiser ID doesn't exist")
+            raise Exception("Fundraiser ID doesn't exist")
         prepare_df(df)
         calculate_points(df)
         pd.set_option("display.max_rows", None, "display.max_columns", None) #to show all entries
