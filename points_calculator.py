@@ -2,6 +2,7 @@ from datetime import datetime, date
 import argparse
 import subprocess
 import pandas as pd
+pd.options.mode.chained_assignment = None #disable warnging for chained pandas df
 
 
 # define functions
@@ -69,19 +70,20 @@ def main():
 
     if argument.flag == "test":
         #print("test")
-        run = subprocess.run(["python","test_points_calculator.py"], check=True)
+        run = subprocess.run(["python3","test_points_calculator.py"], check=True)
         return run.stdout
 
     # only display filtered results specified by --fundraiser flag
     elif argument.fundraiser:
+        print(argument.fundraiser)
         df=pd.read_csv(argument.flag, sep = ";")
         subset = df.loc[df["Fundraiser ID"] == argument.fundraiser]
         if subset.empty:
             raise Exception("Fundraiser ID doesn't exist")
-        prepare_df(df)
-        calculate_points(df)
+        prepare_df(subset)
+        calculate_points(subset)
         pd.set_option("display.max_rows", None, "display.max_columns", None) #to show all entries
-        print(df.sort_values(by=["Points"], ascending=False))
+        print(subset.sort_values(by=["Points"], ascending=False))
 
     # show all results, order by points (ascending)
     else:
