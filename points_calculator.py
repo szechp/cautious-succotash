@@ -69,7 +69,6 @@ def main():
     argument = parser.parse_args()
 
     if argument.flag == "test":
-        #print("test")
         run = subprocess.run(["python3","test_points_calculator.py"], check=True)
         return run.stdout
 
