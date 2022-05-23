@@ -1,5 +1,6 @@
 from datetime import datetime, date
 import argparse
+import subprocess
 import pandas as pd
 
 
@@ -45,15 +46,15 @@ def calculate_points(i_df):
     for index, row in i_df.iterrows():
         if row["Annual amount"] >= 300 and row["Age"] >= 50:
             i_df.loc[index, "Points"] += 3
-        if row["Annual amount"] >= 300 and row["Age"] >= 30:
+        elif row["Annual amount"] >= 300 and row["Age"] >= 30:
             i_df.loc[index, "Points"] += 1.5
-        if row["Annual amount"] >= 150 and row["Age"] >= 50:
+        elif row["Annual amount"] >= 150 and row["Age"] >= 50:
             i_df.loc[index, "Points"] += 2
-        if row["Annual amount"] >= 150 and row["Age"] >= 30:
+        elif row["Annual amount"] >= 150 and row["Age"] >= 30:
             i_df.loc[index, "Points"] += 1
-        if row["Annual amount"] >= 120 and row["Age"] >= 50:
+        elif row["Annual amount"] >= 120 and row["Age"] >= 50:
             i_df.loc[index, "Points"] += 1
-        if row["Annual amount"] >= 120 and row["Age"] >= 30:
+        elif row["Annual amount"] >= 120 and row["Age"] >= 30:
             i_df.loc[index, "Points"] += 0.5
 
 
@@ -66,8 +67,11 @@ def main():
     argument = parser.parse_args()
 
     if argument.flag == "test":
-        print("run test")
+        #print("test")
+        run = subprocess.run(["python","test_points_calculator.py"])
+        return run.stdout
 
+    # only display filtered results specified by --fundraiser flag
     elif argument.fundraiser:
         df=pd.read_csv(argument.flag, sep = ";")
         subset = df.loc[df["Fundraiser ID"] == argument.fundraiser]
@@ -78,6 +82,7 @@ def main():
         pd.set_option("display.max_rows", None, "display.max_columns", None) #to show all entries
         print(df.sort_values(by=["Points"], ascending=False))
 
+    # show all results, order by points (ascending)
     else:
         df=pd.read_csv(argument.flag, sep = ";")
         prepare_df(df)
