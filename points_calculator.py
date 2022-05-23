@@ -63,12 +63,13 @@ def main():
     # get arguments from cl
     parser = argparse.ArgumentParser(description="Points calculator for fundraising")
     parser.add_argument("flag", type=str, help='specify directory or run tests')
-    parser.add_argument("--fundraiser", required = False, type = int, help="specify one single fundraiser to get the Points from")
+    parser.add_argument("--fundraiser", required = False, type = int, \
+        help="specify one single fundraiser to get the Points from")
     argument = parser.parse_args()
 
     if argument.flag == "test":
         #print("test")
-        run = subprocess.run(["python","test_points_calculator.py"])
+        run = subprocess.run(["python","test_points_calculator.py"], check=True)
         return run.stdout
 
     # only display filtered results specified by --fundraiser flag
