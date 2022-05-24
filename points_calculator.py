@@ -2,7 +2,6 @@ from datetime import datetime, date
 import argparse
 import subprocess
 import pandas as pd
-#import numpy as np
 pd.options.mode.chained_assignment = None #disable warnging for chained pandas df
 
 
