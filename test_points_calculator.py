@@ -30,6 +30,17 @@ class TestPointsCalculator(unittest.TestCase):
         self.assertEqual(test_df.loc[2, "Points"], 2)
         #usw.
 
+    def test_sum_points(self):
+        """test: compare sum of points in test_donations.csv
+        """
+        test_df=pd.read_csv("test_donations.csv", sep = ";")
+        points_calculator.prepare_df(test_df)
+        points_calculator.calculate_points(test_df)
+        df_sum_points = points_calculator.sum_points(test_df)
+        self.assertEqual(df_sum_points.loc[0, "Sum of points"], 5.5)
+        self.assertEqual(df_sum_points.loc[1, "Sum of points"], 2.0)
+        self.assertEqual(df_sum_points.loc[2, "Sum of points"], 5.0)
+
 
 if __name__ == "__main__":
     unittest.main()
