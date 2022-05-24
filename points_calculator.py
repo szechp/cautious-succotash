@@ -59,6 +59,25 @@ def calculate_points(i_df):
             i_df.loc[index, "Points"] += 0.5
 
 
+def sum_points(i_df):
+    """summarizes the dataframe to view the total points per Fundraiser ID
+
+    Args:
+        i_df (pandas.core.frame.DataFrame): pandas dataframe (column names have to be very
+        speficic for this to work)
+
+    Returns:
+        pandas.core.frame.DataFrame: A pandas df with two rows ("Fundraiser ID"
+        and "Sum of points")
+    """
+    df_sum = pd.DataFrame(columns = ["Fundraiser ID", "Sum of points"])
+    for i, item in enumerate(i_df["Fundraiser ID"].unique().tolist()):
+        sum_points = i_df.loc[:,"Points"].where(i_df["Fundraiser ID"] == item).sum()
+        to_append = [str(item), sum_points]
+        df_sum.loc[i] = to_append
+    return df_sum
+
+
 def main():
     """pulling it all together"""
     # get arguments from cl
@@ -82,7 +101,8 @@ def main():
         prepare_df(subset)
         calculate_points(subset)
         pd.set_option("display.max_rows", None, "display.max_columns", None) #to show all entries
-        print(subset.sort_values(by=["Points"], ascending=False))
+        df_sum_points = sum_points(subset)
+        print(df_sum_points.sort_values(by=["Sum of points"], ascending=False))
 
     # show all results, order by points (ascending)
     else:
@@ -90,7 +110,8 @@ def main():
         prepare_df(df)
         calculate_points(df)
         pd.set_option("display.max_rows", None, "display.max_columns", None) #to show all entries
-        print(df.sort_values(by=["Points"], ascending=False))
+        df_sum_points = sum_points(df)
+        print(df_sum_points.sort_values(by=["Sum of points"], ascending=False))
 
 
 if __name__ == "__main__":
